@@ -36,7 +36,7 @@ class Player
             //Console.Error.WriteLine( "Zone " + zone);
             power = power>zone? power-1 : power<zone? power+1 : power;
             //Console.Error.WriteLine( "Power " + power);
-            Console.WriteLine("0 0");// +power);
+              Console.WriteLine("0 "+ power);// +power);
         }
     }
 }
