@@ -11,10 +11,6 @@ using System.Collections.Generic;
  **/
 class Solution
 {
-    void DetectBomb(int a, int b, int h, int w, ref int[,] grid)
-    {
-         if( a>=0 && a<w && b>=0 && b<h  && grid[a,b]!=-1 ){grid[a,b]++;}//up left
-    }
     static void Main(string[] args) {
         int[,] grid = new int[30,30];
         int w = int.Parse(Console.ReadLine());  //x
