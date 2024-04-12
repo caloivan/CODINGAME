@@ -11,39 +11,25 @@ using System.Collections.Generic;
  **/
 class Player
 {
-    static   strategy myStrategy = strategy.closestHumanRescuable; 
+    static strategy myStrategy = strategy.closestHumanRescuable; 
 
-    public enum strategy{
-        closestZombieposition,
-        closestZombiePrediction,
-        closestZombiePredictionP2,
-        closestHumanRescuable
-    }
-
-    const int MaxDistance = 20000;
+    public enum strategy{ closestZombieposition,  closestZombiePrediction,  closestZombiePredictionP2,  closestHumanRescuable  }
+    const int  MaxDistance = 20000;
     static int minDistance = MaxDistance;
     const int ashSpeed = 1000;
     const int zombieSpeed = 400;
-    public struct Vector2{
-            public Vector2(){}
-            public Vector2(int _x, int _y){x=_x;y=_y;}
-            public int x=0, y=0;
-    }
 
     public struct Zombie{
         public Zombie(){
-             position = new Vector2(0,0);
         }
         public Zombie(int _x, int _xNext, int _y , int _yNext){  
             x=_x; xNext= _xNext; y=_y; yNext = _yNext;  
-            position = new Vector2(_x, _y);
             }
         public int x=0, xNext=0, y=0, yNext=0;
-        public Vector2 position;
         public int humanID =0;  // ID of the human to purusue
         public int distance =0;  // ID of the human to purusue
         public void sethumanID(int _t){ humanID =_t;}
-    }
+    }//Zombie
 
      public struct Human{
         public Human(){}
@@ -53,15 +39,13 @@ class Player
         public int distance =0;    public void setdistance(int _t){ distance =_t;}
         public bool isRescuable = false;    public void setRescuable(bool _t){ isRescuable  =_t;}
         bool isSabable = true;
-    }
-
+    }//human
 
     static void Main(string[] args)  {
         string[] inputs;
       
         minDistance = MaxDistance;
-        while (true)
-        {
+        while (true)  {
             inputs = Console.ReadLine().Split(' ');
             int x = int.Parse(inputs[0]);
             int y = int.Parse(inputs[1]);
@@ -73,7 +57,7 @@ class Player
             for (int h = 0; h < humanCount; h++)  {
                 inputs = Console.ReadLine().Split(' ');  int humanId = int.Parse(inputs[0]);  int humanX = int.Parse(inputs[1]);  int humanY = int.Parse(inputs[2]);
                 humans.Add(new Human(humanX,humanY));
-            }
+            }//for
 
             //*********************************************Get list of Zombies
             int zombieCount = int.Parse(Console.ReadLine());
@@ -86,9 +70,9 @@ class Player
                 int zombieX = int.Parse(inputs[1]);  int zombieY = int.Parse(inputs[2]);
                 int zombieXNext = int.Parse(inputs[3]);  int zombieYNext = int.Parse(inputs[4]);
                 zombies.Add(new Zombie(zombieX,zombieXNext,zombieY,zombieYNext));
-            }
+            }//for
 
-            //**************************************************select closest zombie
+            //**************************************************select closest zombie -> mindistance to ash
             minDistance = MaxDistance;
             for (int i = 0; i < zombieCount; i++)  {
                 int distanceToZombie = Distance(x,y,zombies[i].x,zombies[i].y) ;
@@ -98,11 +82,10 @@ class Player
                         zombieTargetOffset= i;
                         //Console.Error.WriteLine("Closest zombie ID: "+ i + " By " + minDistance );
                 }
-            }
+            }//for
 
            // Console.Error.WriteLine("ZombieTarget "+ zombieTargetOffset  );
-            switch(myStrategy)
-            {
+            switch(myStrategy)  {
                     case strategy.closestZombieposition: {
                      Console.WriteLine(zombies[zombieTargetOffset].x + " " + zombies[zombieTargetOffset].y ); 
                      }break;
@@ -111,14 +94,12 @@ class Player
                      Console.WriteLine(zombies[zombieTargetOffset].xNext + " " + zombies[zombieTargetOffset].yNext );  
                     }break;
                     case strategy.closestZombiePredictionP2: {
-
                         int xDelta =zombies[zombieTargetOffset].xNext - zombies[zombieTargetOffset].x;
                         int yDelta =zombies[zombieTargetOffset].yNext - zombies[zombieTargetOffset].y;
-
                          //Console.WriteLine(zombies[zombieTargetOffset].x + 2*xDelta + " " + zombies[zombieTargetOffset].y +2*xDelta);  
                     } break;
 
-                    case strategy.closestHumanRescuable:  { //discover for each human, what zombie is closest, at what distance, and if he is rescuable, based on distances
+                    case strategy.closestHumanRescuable:  { //discover, for each human, what zombie is closest, at what distance, and if human is rescuable, based on distances ash-human vs ash-zombie
                         for (int z = 0; z < zombieCount; z++)  {  //for each zombie
                             minDistance = MaxDistance;
                             for (int h = 0; h < humanCount; h++)  {   // what human is closest
@@ -132,16 +113,12 @@ class Player
                                         humans[h].setzombieID(z);
                                         humans[h].setdistance(minDistance);
                                         int distAshHuman = Distance (x,y,humans[h].x, humans[h].y );
-                                         /*Console.Error.WriteLine("is : "+ 
-                                                               "distAshHuman: "+ distAshHuman +  " / "+"ashSpeed: "+ ashSpeed + 
-                                                             " < " +  
-                                                            " distHumanZombie: " + distHumanZombie + " / "+ "zombieSpeed: " + zombieSpeed+
-                                                            "=" +distAshHuman/ashSpeed + " < " + distHumanZombie/zombieSpeed );*/
+                                       /*  Console.Error.WriteLine("is : "+  "distAshHuman: "+ distAshHuman +  " / "+"ashSpeed: "+ ashSpeed +  " < " +   " distHumanZombie: " + distHumanZombie + " / "+ "zombieSpeed: " + zombieSpeed+ "=" +distAshHuman/ashSpeed + " < " + distHumanZombie/zombieSpeed );*/
                                         bool resucable = distAshHuman   / ashSpeed < distHumanZombie / zombieSpeed;
                                         humans[h].setRescuable(resucable);// if ash can get to human before closest zombie
-                                }
-                            }   
-                        }
+                                } // new min distance
+                            } //for human   
+                        }//for zombie
 
                         // ASH  finds hat closest human is rescueable  
                          minDistance = MaxDistance;
@@ -153,10 +130,11 @@ class Player
                                 if(distAshHuman < minDistance){
                                     minDistance = distAshHuman ;
                                     humanTargetID = h;
-                                }
-                            }
-                        }
+                                }//new min
+                            }//if  rescuable
+                        }//for human
                         Console.WriteLine(humans[humanTargetID].x + " " + humans[humanTargetID].y );  
+                         //Console.WriteLine(  "4000 4500 "  );  
                     } break;
                      default: break;
             }//switch
