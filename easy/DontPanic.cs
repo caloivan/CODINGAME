@@ -1,18 +1,8 @@
 using System;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Collections;
-using System.Collections.Generic;
 
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
 class Player
 {
-    static void Main(string[] args)
-    {
+    static void Main(string[] args)  {
         string[] inputs;
         inputs = Console.ReadLine().Split(' ');
         int nbFloors = int.Parse(inputs[0]); // number of floors
@@ -33,23 +23,21 @@ class Player
             portal[elevatorFloor] = elevatorPos;  //Console.Error.WriteLine(" Floor: " +elevatorFloor + " has portal in position " + elevatorPos);
         }
            portal[exitFloor] = exitPos;// Console.Error.WriteLine(" Floor: " +exitFloor + " has portal in position " + exitPos);
-        // game loop
-        while (true)
-        {
+      
+        while (true) {
             inputs = Console.ReadLine().Split(' ');
             
             int cloneFloor = int.Parse(inputs[0]); // floor of the leading clone
             int clonePos = int.Parse(inputs[1]); // position of the leading clone on its floor
-            string direction = inputs[2]; // direction of the leading clone: LEFT or RIGHT
-            Console.Error.WriteLine("cloneFloor"+ cloneFloor + "  clonePos " +clonePos + "  direction "+direction);
+            string direction = inputs[2]; // direction of the leading clone: LEFT or RIGHTConsole.Error.WriteLine("cloneFloor"+ cloneFloor + "  clonePos " +clonePos + "  direction "+direction);
            
            string solution = "WAIT";
            if(clonePos>width-2||clonePos==0
-             ||(cloneFloor!=-1)&&(portal[cloneFloor]>clonePos&& direction=="LEFT")
+              ||(cloneFloor!=-1)&&(portal[cloneFloor]>clonePos&& direction=="LEFT")
               ||(cloneFloor!=-1)&&(portal[cloneFloor]<clonePos&& direction=="RIGHT")
-             ) solution = "BLOCK";
-           
+            ) 
+                solution = "BLOCK";
             Console.WriteLine( solution); // action: WAIT or BLOCK
-        }
+        } 
     }
 }
