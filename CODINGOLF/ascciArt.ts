@@ -1,2 +1,2 @@
-const w:number=Number(readline()),h:number=Number(readline()),t:string=readline().toUpperCase();
-for(let i:number=0;i<h;i++){const row:string=readline();let o:string="";for(let l of t){let ap=l.charCodeAt(0)-'A'.charCodeAt(0);ap=ap<0?26:ap>25?26:ap;let c=ap*w;o+=row.substring(c,c+w);}console.log(o)}
+let w=Number(readline()),h=Number(readline()),t=readline().toUpperCase(),i,o,b,c;
+for(i=0;i<h;i++){const row=readline();o="";for(let l of t){b=l.charCodeAt(0)-'A'.charCodeAt(0);b=b<0?26:b>25?26:b;c=b*w;o+=row.substring(c,c+w);}console.log(o)}
